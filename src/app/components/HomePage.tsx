@@ -1,6 +1,20 @@
-"use client"
 import React, {useEffect} from 'react';
-
+import type {Metadata} from "next";
+export const metadata: Metadata = {
+    title: "NextJS Task Manager",
+    description: "A NextJS task manager PWA",
+    generator: "NextJS",
+    manifest: "/manifest.json",
+    keywords: ["NextJS", "PWA", "Task Manager"],
+    // themeColor
+    authors: [{name: "Janssens Robin"},
+        {
+            name: "Janssens Robin",
+            url: "janssensrobin.be"
+        }],
+    // viewport
+    icons: [],
+};
 export function HomePage() {
     return (
         <>

@@ -1,6 +1,7 @@
 "use client"
 import React, {useEffect} from 'react';
 import {HomePage} from "@/app/components/HomePage";
+
 export default function Home() {
     useEffect(() => {
         // console.log('MyApp useEffect');
@@ -21,5 +22,7 @@ export default function Home() {
             console.log('Service worker not supported');
         }
     }, []);
-    return <HomePage/>;
+    return (
+            <HomePage/>
+    )
 }
