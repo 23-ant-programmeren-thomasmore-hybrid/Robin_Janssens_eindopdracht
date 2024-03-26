@@ -24,9 +24,7 @@ const inter = Inter({subsets: ["latin"]});
 export const viewport: Viewport = {
     themeColor: "#10216577",
 }
-export default function RootLayout({
-                                       children,
-                                   }: Readonly<{
+export default function RootLayout({children,}: Readonly<{
     children: React.ReactNode;
 }>) {
     return (
