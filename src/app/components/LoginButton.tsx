@@ -4,14 +4,23 @@ import {signIn, signOut} from "next-auth/react";
 
 export default async function LoginButton() {
     const session = await getServerSession(authOptions);
+
     return (
-        <button onClick={() => signIn()}>Sign In</button>
-        // <div>
-        //     {session ? (
-        //         <button onClick={() => signOut()}>Sign Out</button>
-        //     ) : (
-        //         <button onClick={() => signIn()}>Sign In</button>
-        //     )}
-        // </div>
+        <div>
+            {session ? (
+                <>
+                    <a className={"bg-gray-500 rounded p-1 hover:underline"} href={"/api/auth/signout"}><span>Sign Out</span></a>
+                    {/*// @ts-ignore*/}
+                    <span>{session.user.name}</span>
+                </>
+            ) : (
+                <>
+                    <a className={"bg-gray-500 rounded p-1 hover:underline"} href={"/api/auth/signin"}><span>Sign In</span></a>
+                </>
+            )}
+
+
+        </div>
     );
 }
+

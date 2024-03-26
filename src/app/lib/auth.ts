@@ -1,9 +1,8 @@
 import { NextAuthOptions } from 'next-auth';
-import GithubProvider from 'next-auth/providers/github';
 import CredentialsProvider from "next-auth/providers/credentials";
 export const authOptions: NextAuthOptions = {
     // Secret for Next-auth, without this JWT encryption/decryption won't work
-    // secret: process.env.NEXTAUTH_SECRET,
+    secret: process.env.NEXTAUTH_SECRET,
 
     // Configure one or more authentication providers
     providers: [
@@ -16,7 +15,7 @@ export const authOptions: NextAuthOptions = {
             async authorize(credentials, req) {
                 console.log(credentials)
                 // Add logic here to look up the user from the credentials supplied
-                const user = { id: "1", name: "J Smith", email: "jsmith@example.com" }
+                const user = { id: Math.random().toString(), name: credentials?.username, password: credentials?.password}
 
                 if (user) {
                     // Any object returned will be saved in `user` property of the JWT

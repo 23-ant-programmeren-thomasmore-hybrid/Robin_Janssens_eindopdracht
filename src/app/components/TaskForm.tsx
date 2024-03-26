@@ -4,9 +4,9 @@ import React, { useState } from 'react';
 import 'firebase/firestore';
 import {db} from "@/app/firebase";
 // @ts-ignore
-import {addDoc, collection} from "@firebase/firestore";
 // import {addDoc, collection} from "@firebase/firestore";
-const taskCollectionRef = collection(db, 'tasks')
+// import {addDoc, collection} from "@firebase/firestore";
+// const taskCollectionRef = collection(db, 'tasks')
 
 
 
@@ -21,11 +21,11 @@ export function TaskForm() {
 
         try {
             // Add task data to Firestore collection
-            await addDoc(taskCollectionRef, taskData);
-            // @ts-ignore
-            confirm('Task added successfully:', taskData.title);
-            setTitle('');
-            setDescription('');
+            // await addDoc(taskCollectionRef, taskData);
+            // // @ts-ignore
+            // confirm('Task added successfully:', taskData.title);
+            // setTitle('');
+            // setDescription('');
             // redirect to tasks page
             location.href = '/tasklist';
         } catch (error) {
