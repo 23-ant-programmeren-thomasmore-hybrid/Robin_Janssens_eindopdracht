@@ -1,8 +1,7 @@
 // components/TaskForm.tsx
 
+
 import React, { useState } from 'react';
-import 'firebase/firestore';
-import {db} from "@/app/firebase";
 // @ts-ignore
 // import {addDoc, collection} from "@firebase/firestore";
 // import {addDoc, collection} from "@firebase/firestore";

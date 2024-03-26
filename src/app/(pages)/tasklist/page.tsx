@@ -1,6 +1,5 @@
 // pages/tasks.tsx
 import React from 'react';
-import {db} from "@/app/firebase";
 // @ts-ignore
 import {DeleteButton} from "@/app/components/DeleteButton";
 import {getServerSession} from "next-auth";
