@@ -1,7 +1,6 @@
 "use client";
 import Link from "next/link";
 import {usePathname} from "next/navigation";
-import LoginButton from "@/app/components/LoginButton";
 
 export function NavBar() {
     const pathname = usePathname()
@@ -28,7 +27,6 @@ export function NavBar() {
                 {/*    Coming soon*/}
                 {/*</Link>*/}
             </nav>
-            <LoginButton/>
         </>
     );
 }

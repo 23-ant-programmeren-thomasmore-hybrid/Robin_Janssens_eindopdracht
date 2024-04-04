@@ -1,14 +1,6 @@
-// components/TaskForm.tsx
-
+"use client"
 
 import React, { useState } from 'react';
-// @ts-ignore
-// import {addDoc, collection} from "@firebase/firestore";
-// import {addDoc, collection} from "@firebase/firestore";
-// const taskCollectionRef = collection(db, 'tasks')
-
-
-
 
 export function TaskForm() {
     const [title, setTitle] = useState<string>('');
@@ -19,17 +11,8 @@ export function TaskForm() {
         const taskData = { title, description };
 
         try {
-            // Add task data to Firestore collection
-            // await addDoc(taskCollectionRef, taskData);
-            // // @ts-ignore
-            // confirm('Task added successfully:', taskData.title);
-            // setTitle('');
-            // setDescription('');
-            // redirect to tasks page
-            location.href = '/tasklist';
         } catch (error) {
             console.error('Error adding task:', error);
-            // Handle error (e.g., show error message to the user)
         }
 
     }

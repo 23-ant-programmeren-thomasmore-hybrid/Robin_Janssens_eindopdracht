@@ -1,34 +1,47 @@
-import { NextAuthOptions } from 'next-auth';
+import {NextAuthOptions} from 'next-auth';
 import CredentialsProvider from "next-auth/providers/credentials";
+import {compare} from 'bcrypt';
+import {sql} from '@vercel/postgres'
+
 export const authOptions: NextAuthOptions = {
     // Secret for Next-auth, without this JWT encryption/decryption won't work
     secret: process.env.NEXTAUTH_SECRET,
-    pages: {
-
+    pages: {},
+    session: {
+        strategy: 'jwt',
     },
     // Configure one or more authentication providers
     providers: [
         CredentialsProvider({
             name: 'Credentials',
             credentials: {
-                username: { label: "Username", type: "text" },
-                password: {  label: "Password", type: "password" }
+                email: {},
+                password: {}
             },
             async authorize(credentials, req) {
-                console.log(credentials)
-                // Add logic here to look up the user from the credentials supplied
-                const user = { id: Math.random().toString(), name: credentials?.username, password: credentials?.password}
+//
+                const response = await sql`
+                    SELECT *
+                    FROM users
+                    WHERE email = ${credentials?.email}`;
+                const user = response.rows[0];
 
-                if (user) {
-                    // Any object returned will be saved in `user` property of the JWT
-                    return user
-                } else {
-                    // If you return null then an error will be displayed advising the user to check their details.
-                    return null
+                const passwordCorrect = await compare(
+                    credentials?.password || '',
+                    user.password
+                );
 
-                    // You can also Reject this callback with an Error thus the user will be sent to the error page with the error message as a query parameter
+                console.log({passwordCorrect});
+
+                if (passwordCorrect) {
+                    return {
+                        id: user.id,
+                        email: user.email,
+                    };
                 }
+                return null;
             }
         })
     ]
 };
+
