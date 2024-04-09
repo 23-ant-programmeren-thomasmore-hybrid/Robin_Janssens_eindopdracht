@@ -9,6 +9,7 @@ declare const self: ServiceWorkerGlobalScope & {
     __SW_MANIFEST: (PrecacheEntry | string)[] | undefined;
 };
 
+
 installSerwist({
     precacheEntries: self.__SW_MANIFEST,
     skipWaiting: true,

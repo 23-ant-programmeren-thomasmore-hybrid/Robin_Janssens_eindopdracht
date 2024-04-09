@@ -4,7 +4,7 @@ export const metadata: Metadata = {
     title: "NextJS Task Manager",
     description: "A NextJS task manager PWA",
     generator: "NextJS",
-    manifest: "/manifest.json",
+    manifest: "/mani_backup.json",
     keywords: ["NextJS", "PWA", "Task Manager"],
     // themeColor
     authors: [{name: "Janssens Robin"},

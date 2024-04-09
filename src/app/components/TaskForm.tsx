@@ -1,24 +1,43 @@
 "use client"
 
-import React, { useState } from 'react';
+import React, {FormEvent, useState} from 'react';
 
 export function TaskForm() {
     const [title, setTitle] = useState<string>('');
     const [description, setDescription] = useState<string>('');
-
-    async function handleSubmit(e: React.FormEvent) {
+    const [error, setError] = useState<string | null>(null);
+    const [successMessage, setSuccessMessage] = useState<string | null>(null);
+    const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        const taskData = { title, description };
 
-        try {
-        } catch (error) {
-            console.error('Error adding task:', error);
+        const formData = new FormData(e.currentTarget);
+        const response = await fetch("/api/task/create", {
+            method: 'POST',
+            body: JSON.stringify({
+                title: formData.get('title'),
+                description: formData.get('description')
+            }),
+            headers: {
+                'Content-type': 'application/json'
+            }
+        });
+        const data = await response.json();
+
+        if (response.ok) {
+            // Clear any previous errors
+            setError(null);
+            // Set success message
+            setSuccessMessage(data.message);
+        } else {
+            // Handle error response
+            setError(data.error);
         }
-
     }
 
     return (
         <form onSubmit={handleSubmit} className="w-full max-w-lg">
+            {error && <span className={"text-red-500"}>{error}</span>}
+            {successMessage && <span className={"text-green-500"}>{successMessage}</span>}
             <div className="flex flex-wrap -mx-3 mb-6">
                 <div className="w-full px-3 mb-6">
                     <label className="block uppercase tracking-wide text-white text-xs font-bold mb-2" htmlFor="title">
@@ -27,6 +46,7 @@ export function TaskForm() {
                     <input
                         type="text"
                         id="title"
+                        name={"title"}
                         className="appearance-none block w-full bg-gray-100 text-black border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
                         placeholder="Enter task title"
                         value={title}
@@ -40,6 +60,7 @@ export function TaskForm() {
                     </label>
                     <textarea
                         id="description"
+                        name={"description"}
                         className="appearance-none block w-full bg-gray-100 text-black border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                         placeholder="Enter task description"
                         value={description}

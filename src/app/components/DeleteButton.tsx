@@ -1,42 +1,46 @@
-// "use client";
-import {FaTrashAlt} from "react-icons/fa";
-// import {useEffect, useState} from "react";
-// import {db} from "@/app/firebase";
-// import {collection, getDocs, deleteDoc, doc} from "@firebase/firestore";
-// // Fetch tasks from firestore
-// export const revalidate = 0;
-//
-export function DeleteButton({taskId}: { taskId: string }) {
-//     const [tasks, setTasks] = useState<any[]>([]);
-//     useEffect(() => {
-//         const fetchTasks = async () => {
-//             const tasksSnapshot = await getDocs(collection(db, "tasks"));
-//             const tasksData = tasksSnapshot.docs.map((doc: any) => ({...doc.data(), id: doc.id}));
-//             setTasks(tasksData);
-//         }
-//         fetchTasks();
-//     }, []); // No dependencies, runs only once when the component mounts
-//
-//     const handleDeleteTask = async (taskId: string) => {
-//         const confirmDelete = window.confirm("Are you sure you want to delete this task?");
-//         if (confirmDelete) {
-//             try {
-//                 await deleteDoc(doc(db, "tasks", taskId));
-//                 setTasks(tasks.filter(task => task.id !== taskId));
-//                 // Refresh the page
-//                 location.reload();
-//             } catch (error) {
-//                 console.error("Error deleting task:", error);
-//             }
-//         }
-//     };
+// components/DeleteButton.tsx
+
+import { useState } from 'react';
+import { FaTrashAlt } from 'react-icons/fa';
+
+interface Props {
+    taskId: string;
+}
+
+export function DeleteButton({ taskId }: Props) {
+    const [isLoading, setIsLoading] = useState(false);
+
+    const handleDelete = async () => {
+        setIsLoading(true);
+        try {
+            // console.log(taskId)
+            const response = await fetch('/api/task/delete', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: taskId, // Pass taskId in the request body
+            });
+            if (response.ok) {
+                // Optionally, handle success, e.g., show a confirmation message
+            } else {
+                console.error('Failed to delete task');
+            }
+        } catch (error) {
+            console.error('Error deleting task:', error);
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
     return (
         <button
-            aria-label={"Delete task"}
-            className="absolute top-2 right-2 text-white"
-            // onClick={() => handleDeleteTask(taskId)}
+            aria-label="Delete task"
+            className="absolute top-2 right-2 text-red-500"
+            onClick={handleDelete}
+            disabled={isLoading}
         >
-            <FaTrashAlt/>
+            <FaTrashAlt />
         </button>
     );
 }

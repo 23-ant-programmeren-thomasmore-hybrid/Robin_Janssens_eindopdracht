@@ -7,8 +7,8 @@ const withSerwist = withSerwistInit({
     swDest: "public/sw.js",
     // cacheOnFrontEndNav: true,
     disable: process.env.NODE_ENV === "development",
-    // reloadOnOnline: true,
-    // register: true,
+    reloadOnOnline: true,
+    register: true,
 });
 
 export default withSerwist({

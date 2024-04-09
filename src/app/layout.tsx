@@ -5,6 +5,23 @@ import {getServerSession} from "next-auth";
 import Link from "next/link";
 import Logout from "@/app/components/Logout";
 
+const APP_NAME = "NextJS PWA Task Manager";
+const APP_DEFAULT_TITLE = "NextJS PWA Task Manager";
+const APP_TITLE_TEMPLATE = "%s - Task Manager";
+const APP_DESCRIPTION = "A NextJS PWA Task Manager!";
+
+export const metadata: Metadata = {
+    applicationName: APP_NAME,
+    title: {
+        default: APP_DEFAULT_TITLE,
+        template: APP_TITLE_TEMPLATE,
+    },
+    description: APP_DESCRIPTION,
+    formatDetection: {
+        telephone: false,
+    },
+};
+
 const inter = Inter({subsets: ["latin"]});
 export const viewport: Viewport = {
     themeColor: "#10216577",

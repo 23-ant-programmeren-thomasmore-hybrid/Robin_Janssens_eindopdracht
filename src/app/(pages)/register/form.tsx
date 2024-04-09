@@ -43,7 +43,7 @@ export default function Form() {
                    type={"email"}/>
             <label htmlFor={"password"}>Password: </label>
             <input id={"password"} name={"password"} className={"border border-black text-black"} type={"password"}/>
-            <button type={"submit"} className={"hover:bg-gray-700 bg-gray-500 rounded p-1 hover:underline"}>Register
+            <button type={"submit"} className="bg-blue-600 hover:bg-blue-900 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Register
             </button>
         </form>
     )
