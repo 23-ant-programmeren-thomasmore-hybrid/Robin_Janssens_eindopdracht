@@ -1,10 +1,6 @@
 import React from 'react';
 import {HomePage} from "@/app/components/HomePage";
 import Head from "next/head";
-
-export const metadata: Metadata = {
-
-}
 export default function Home() {
     return (
         <>
