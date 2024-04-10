@@ -1,43 +1,47 @@
-"use client"
+'use client'
 
-import React, {FormEvent, useState} from 'react';
+import {useFormState, useFormStatus} from "react-dom";
+import {createTask} from "@/app/lib/actions";
+import {useState} from "react";
 
-export function TaskForm() {
-    const [title, setTitle] = useState<string>('');
-    const [description, setDescription] = useState<string>('');
-    const [error, setError] = useState<string | null>(null);
-    const [successMessage, setSuccessMessage] = useState<string | null>(null);
-    const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
+const initialState = {
+    message: "", isPrivate: false
+}
 
-        const formData = new FormData(e.currentTarget);
-        const response = await fetch("/api/task/create", {
-            method: 'POST',
-            body: JSON.stringify({
-                title: formData.get('title'),
-                description: formData.get('description')
-            }),
-            headers: {
-                'Content-type': 'application/json'
-            }
-        });
-        const data = await response.json();
-
-        if (response.ok) {
-            // Clear any previous errors
-            setError(null);
-            // Set success message
-            setSuccessMessage(data.message);
-        } else {
-            // Handle error response
-            setError(data.error);
-        }
-    }
+function SubmitButton() {
+    const {pending} = useFormStatus();
 
     return (
-        <form onSubmit={handleSubmit} className="w-full max-w-lg">
-            {error && <span className={"text-red-500"}>{error}</span>}
-            {successMessage && <span className={"text-green-500"}>{successMessage}</span>}
+        <button
+            type="submit"
+            aria-disabled={pending}
+            className="bg-blue-600 hover:bg-blue-900 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+        >
+            Add Task
+        </button>
+    );
+}
+
+export function TaskForm() {
+    const [state, setState] = useState(initialState)
+    const [formState, formAction] = useFormState(createTask, initialState);
+
+    const getMessageClass = () => {
+        return formState.message.startsWith("Failed") ? "text-red-600" : "text-green-600";
+    }
+
+    const handleToggleChange = () => {
+
+        setState((prevState) => ({
+            ...prevState,
+            isPrivate: !prevState.isPrivate,
+        }));
+    }
+    return (
+        <form action={formAction} className="w-full max-w-lg">
+            {formState.message && (
+                <span className={`block mb-2 ${getMessageClass()}`}>{formState.message}</span>
+            )}
             <div className="flex flex-wrap -mx-3 mb-6">
                 <div className="w-full px-3 mb-6">
                     <label className="block uppercase tracking-wide text-white text-xs font-bold mb-2" htmlFor="title">
@@ -49,13 +53,12 @@ export function TaskForm() {
                         name={"title"}
                         className="appearance-none block w-full bg-gray-100 text-black border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
                         placeholder="Enter task title"
-                        value={title}
-                        onChange={(e) => setTitle(e.target.value)}
                         required
                     />
                 </div>
                 <div className="w-full px-3 mb-6">
-                    <label className="block uppercase tracking-wide text-white text-xs font-bold mb-2" htmlFor="description">
+                    <label className="block uppercase tracking-wide text-white text-xs font-bold mb-2"
+                           htmlFor="description">
                         Description
                     </label>
                     <textarea
@@ -63,20 +66,29 @@ export function TaskForm() {
                         name={"description"}
                         className="appearance-none block w-full bg-gray-100 text-black border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                         placeholder="Enter task description"
-                        value={description}
-                        onChange={(e) => setDescription(e.target.value)}
                         rows={4}
                     />
                 </div>
-                <div className="w-full px-3 mb-6">
-                    <button
-                        type="submit"
-                        className="bg-blue-600 hover:bg-blue-900 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-                    >
-                        Add Task
-                    </button>
+                <div className="w-full px-3 mb-6 flex items-center">
+                    <input
+                        type="checkbox"
+                        id="isPrivate"
+                        name="isPrivate"
+                        checked={state.isPrivate}
+                        onChange={handleToggleChange}
+                        className="mr-2"
+                    />
+                    <label htmlFor="isPrivate" className="text-white text-sm">
+                        Private Task
+                    </label>
                 </div>
+                <div className="w-full px-3 mb-6">
+                    <SubmitButton/>
+                </div>
+                <p aria-live={"polite"} className={"sr-only"} role={"status"}>
+                    {formState?.message}
+                </p>
             </div>
         </form>
-    );
+    )
 }
